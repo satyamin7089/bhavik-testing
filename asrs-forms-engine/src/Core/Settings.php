@@ -30,6 +30,11 @@ class Settings {
 			'turnstile_enabled'         => false,
 			'turnstile_site_key'        => '',
 			'turnstile_secret_key'      => '',
+			'recaptcha_enabled'         => false,
+			'recaptcha_version'         => 'v2',
+			'recaptcha_site_key'        => '',
+			'recaptcha_secret_key'      => '',
+			'recaptcha_min_score'       => 0.5,
 			'store_ip_address'          => true,
 			'auto_retry_enabled'        => true,
 			'max_retry_attempts'        => 5,
@@ -73,6 +78,9 @@ class Settings {
 		if ( ! empty( $merged['turnstile_secret_key'] ) ) {
 			$merged['turnstile_secret_key'] = Crypto::decrypt( (string) $merged['turnstile_secret_key'] );
 		}
+		if ( ! empty( $merged['recaptcha_secret_key'] ) ) {
+			$merged['recaptcha_secret_key'] = Crypto::decrypt( (string) $merged['recaptcha_secret_key'] );
+		}
 
 		return $merged;
 	}
@@ -103,6 +111,14 @@ class Settings {
 				(string) ( $input['turnstile_secret_key'] ?? '' ),
 				(string) $current['turnstile_secret_key']
 			),
+			'recaptcha_enabled'         => ! empty( $input['recaptcha_enabled'] ),
+			'recaptcha_version'         => 'v3' === (string) ( $input['recaptcha_version'] ?? 'v2' ) ? 'v3' : 'v2',
+			'recaptcha_site_key'        => sanitize_text_field( (string) ( $input['recaptcha_site_key'] ?? '' ) ),
+			'recaptcha_secret_key'      => $this->resolve_secret_input(
+				(string) ( $input['recaptcha_secret_key'] ?? '' ),
+				(string) $current['recaptcha_secret_key']
+			),
+			'recaptcha_min_score'       => round( max( 0.0, min( 1.0, (float) ( $input['recaptcha_min_score'] ?? 0.5 ) ) ), 2 ),
 			'store_ip_address'          => ! empty( $input['store_ip_address'] ),
 			'auto_retry_enabled'        => ! empty( $input['auto_retry_enabled'] ),
 			'max_retry_attempts'        => max( 1, min( 20, (int) ( $input['max_retry_attempts'] ?? 5 ) ) ),
@@ -116,10 +132,44 @@ class Settings {
 		if ( '' !== $stored['turnstile_secret_key'] ) {
 			$stored['turnstile_secret_key'] = Crypto::encrypt( $stored['turnstile_secret_key'] );
 		}
+		if ( '' !== $stored['recaptcha_secret_key'] ) {
+			$stored['recaptcha_secret_key'] = Crypto::encrypt( $stored['recaptcha_secret_key'] );
+		}
 
 		update_option( self::OPTION_GENERAL, $stored, false );
 
 		return $clean;
+	}
+
+	/**
+	 * Save only Google reCAPTCHA integration fields while preserving all other general settings.
+	 *
+	 * @param array<string, mixed> $input Raw form POST input.
+	 * @return array<string, mixed>
+	 */
+	public function save_recaptcha_settings( array $input ): array {
+		$current = $this->get_all_general();
+
+		$current['recaptcha_enabled']    = ! empty( $input['recaptcha_enabled'] );
+		$current['recaptcha_version']    = 'v3' === (string) ( $input['recaptcha_version'] ?? 'v2' ) ? 'v3' : 'v2';
+		$current['recaptcha_site_key']   = sanitize_text_field( (string) ( $input['recaptcha_site_key'] ?? '' ) );
+		$current['recaptcha_secret_key'] = $this->resolve_secret_input(
+			(string) ( $input['recaptcha_secret_key'] ?? '' ),
+			(string) $current['recaptcha_secret_key']
+		);
+		$current['recaptcha_min_score']  = round( max( 0.0, min( 1.0, (float) ( $input['recaptcha_min_score'] ?? 0.5 ) ) ), 2 );
+
+		$stored = $current;
+		if ( '' !== (string) $stored['turnstile_secret_key'] ) {
+			$stored['turnstile_secret_key'] = Crypto::encrypt( (string) $stored['turnstile_secret_key'] );
+		}
+		if ( '' !== (string) $stored['recaptcha_secret_key'] ) {
+			$stored['recaptcha_secret_key'] = Crypto::encrypt( (string) $stored['recaptcha_secret_key'] );
+		}
+
+		update_option( self::OPTION_GENERAL, $stored, false );
+
+		return $current;
 	}
 
 	/**

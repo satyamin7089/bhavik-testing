@@ -29,6 +29,7 @@ use ASRS\FormsEngine\Frontend\AssetsManager;
 use ASRS\FormsEngine\Frontend\FormRenderer;
 use ASRS\FormsEngine\Repositories\FormMappingRepository;
 use ASRS\FormsEngine\Repositories\SubmissionRepository;
+use ASRS\FormsEngine\Security\ReCaptchaVerifier;
 use ASRS\FormsEngine\Security\SecurityManager;
 use ASRS\FormsEngine\Security\TurnstileVerifier;
 use ASRS\FormsEngine\Services\ExportService;
@@ -125,10 +126,15 @@ final class Plugin {
 			static fn( Container $c ): TurnstileVerifier => new TurnstileVerifier( $c->get( Settings::class ) )
 		);
 		$c->singleton(
+			ReCaptchaVerifier::class,
+			static fn( Container $c ): ReCaptchaVerifier => new ReCaptchaVerifier( $c->get( Settings::class ) )
+		);
+		$c->singleton(
 			SecurityManager::class,
 			static fn( Container $c ): SecurityManager => new SecurityManager(
 				$c->get( Settings::class ),
-				$c->get( TurnstileVerifier::class )
+				$c->get( TurnstileVerifier::class ),
+				$c->get( ReCaptchaVerifier::class )
 			)
 		);
 
@@ -213,13 +219,17 @@ final class Plugin {
 		// Frontend & Shortcodes.
 		$c->singleton(
 			AssetsManager::class,
-			static fn( Container $c ): AssetsManager => new AssetsManager( $c->get( TurnstileVerifier::class ) )
+			static fn( Container $c ): AssetsManager => new AssetsManager(
+				$c->get( TurnstileVerifier::class ),
+				$c->get( ReCaptchaVerifier::class )
+			)
 		);
 		$c->singleton(
 			FormRenderer::class,
 			static fn( Container $c ): FormRenderer => new FormRenderer(
 				$c->get( AssetsManager::class ),
 				$c->get( TurnstileVerifier::class ),
+				$c->get( ReCaptchaVerifier::class ),
 				$c->get( Settings::class )
 			)
 		);
@@ -270,7 +280,10 @@ final class Plugin {
 				$c->get( FormRegistry::class ),
 				$c->get( SubmissionRepository::class ),
 				$c->get( FormMappingRepository::class ),
-				$c->get( ZohoCrmService::class )
+				$c->get( ZohoCrmService::class ),
+				$c->get( ReCaptchaVerifier::class ),
+				$c->get( TurnstileVerifier::class ),
+				$c->get( Settings::class )
 			)
 		);
 		$c->singleton(

@@ -32,24 +32,32 @@ class ZohoIntegrationPage extends AbstractPage {
 	}
 
 	public function render(): void {
-		$cfg      = $this->settings->get_zoho_settings();
-		$status   = $this->auth->get_token_status();
-		$org_info = $this->crm->get_cached_org_info();
-		$modules  = $this->crm->get_cached_modules();
-		$dcs      = ZohoDataCenter::all();
+		$cfg        = $this->settings->get_zoho_settings();
+		$gen_cfg    = $this->settings->get_all_general();
+		$rc_enabled = ! empty( $gen_cfg['recaptcha_enabled'] );
+		$rc_ready   = $rc_enabled && '' !== trim( (string) $gen_cfg['recaptcha_site_key'] ) && '' !== trim( (string) $gen_cfg['recaptcha_secret_key'] );
+		$rc_version = 'v3' === (string) ( $gen_cfg['recaptcha_version'] ?? 'v2' ) ? 'v3' : 'v2';
+		$status     = $this->auth->get_token_status();
+		$org_info   = $this->crm->get_cached_org_info();
+		$modules    = $this->crm->get_cached_modules();
+		$dcs        = ZohoDataCenter::all();
 
 		$actions = '<button type="button" id="asrs-test-zoho-btn" class="button button-primary">' . esc_html__( 'Test Connection', 'asrs-forms-engine' ) . '</button> '
 			. '<button type="button" id="asrs-sync-modules-btn" class="button button-secondary">' . esc_html__( 'Sync Modules', 'asrs-forms-engine' ) . '</button>';
 
 		$this->render_header(
-			__( 'Zoho CRM API v7 Integration', 'asrs-forms-engine' ),
-			__( 'Connect WordPress to Zoho CRM. Zoho Workflows, Blueprints, and Assignment Rules run automatically on every synced lead.', 'asrs-forms-engine' ),
+			__( 'Zoho CRM API v7 & Integrations', 'asrs-forms-engine' ),
+			__( 'Connect WordPress to Zoho CRM and configure Google reCAPTCHA protection. Zoho Workflows, Blueprints, and Assignment Rules run automatically on every synced lead.', 'asrs-forms-engine' ),
 			$actions
 		);
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['updated'] ) ) {
 			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Zoho CRM settings saved.', 'asrs-forms-engine' ) . '</p></div>';
+		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['recaptcha_updated'] ) ) {
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Google reCAPTCHA integration settings saved.', 'asrs-forms-engine' ) . '</p></div>';
 		}
 		?>
 
@@ -207,6 +215,87 @@ class ZohoIntegrationPage extends AbstractPage {
 					</p>
 				</div>
 			</div>
+		</div>
+
+		<div class="asrs-panel" id="asrs-recaptcha-integration-panel">
+			<div class="asrs-panel-header">
+				<h2><?php esc_html_e( 'Google reCAPTCHA Integration', 'asrs-forms-engine' ); ?></h2>
+				<?php if ( $rc_ready ) : ?>
+					<span class="asrs-badge asrs-badge-success">
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: reCAPTCHA version (v2 or v3) */
+								__( 'Active (%s)', 'asrs-forms-engine' ),
+								strtoupper( $rc_version )
+							)
+						);
+						?>
+					</span>
+				<?php elseif ( $rc_enabled ) : ?>
+					<span class="asrs-badge asrs-badge-warning"><?php esc_html_e( 'Keys Required', 'asrs-forms-engine' ); ?></span>
+				<?php else : ?>
+					<span class="asrs-badge asrs-badge-muted"><?php esc_html_e( 'Disabled', 'asrs-forms-engine' ); ?></span>
+				<?php endif; ?>
+			</div>
+
+			<form method="post">
+				<?php wp_nonce_field( 'asrs_save_recaptcha_settings_nonce' ); ?>
+
+				<table class="form-table">
+					<tr>
+						<th><label for="zoho_page_recaptcha_enabled"><?php esc_html_e( 'Enable reCAPTCHA', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<label>
+								<input type="checkbox" id="zoho_page_recaptcha_enabled" name="recaptcha_enabled" value="1" <?php checked( $rc_enabled ); ?> />
+								<?php esc_html_e( 'Protect all frontend forms with Google reCAPTCHA before saving or syncing leads to Zoho CRM', 'asrs-forms-engine' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="zoho_page_recaptcha_version"><?php esc_html_e( 'reCAPTCHA Version', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<select id="zoho_page_recaptcha_version" name="recaptcha_version" class="regular-text asrs-recaptcha-version-select">
+								<option value="v2" <?php selected( $rc_version, 'v2' ); ?>>
+									<?php esc_html_e( 'v2 — "I\'m not a robot" checkbox', 'asrs-forms-engine' ); ?>
+								</option>
+								<option value="v3" <?php selected( $rc_version, 'v3' ); ?>>
+									<?php esc_html_e( 'v3 — Invisible score-based', 'asrs-forms-engine' ); ?>
+								</option>
+							</select>
+							<p class="description">
+								<?php esc_html_e( 'Register keys at google.com/recaptcha/admin for this domain. Key type must match the selected version.', 'asrs-forms-engine' ); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="zoho_page_recaptcha_site_key"><?php esc_html_e( 'Site Key', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<input type="text" id="zoho_page_recaptcha_site_key" name="recaptcha_site_key" class="regular-text code" value="<?php echo esc_attr( (string) $gen_cfg['recaptcha_site_key'] ); ?>" placeholder="<?php esc_attr_e( '6Lc...', 'asrs-forms-engine' ); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><label for="zoho_page_recaptcha_secret_key"><?php esc_html_e( 'Secret Key', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<input type="password" id="zoho_page_recaptcha_secret_key" name="recaptcha_secret_key" class="regular-text code" value="<?php echo esc_attr( Crypto::mask( (string) $gen_cfg['recaptcha_secret_key'] ) ); ?>" autocomplete="new-password" />
+							<p class="description"><?php esc_html_e( 'Encrypted at rest with AES-256-CBC. Leave masked to keep existing secret, or enter __CLEAR__ to remove.', 'asrs-forms-engine' ); ?></p>
+						</td>
+					</tr>
+					<tr class="asrs-recaptcha-v3-row" <?php echo 'v3' !== $rc_version ? 'style="display:none;"' : ''; ?>>
+						<th><label for="zoho_page_recaptcha_min_score"><?php esc_html_e( 'v3 Minimum Score', 'asrs-forms-engine' ); ?></label></th>
+						<td>
+							<input type="number" id="zoho_page_recaptcha_min_score" name="recaptcha_min_score" min="0" max="1" step="0.1" style="width:90px;" value="<?php echo esc_attr( (string) ( $gen_cfg['recaptcha_min_score'] ?? 0.5 ) ); ?>" />
+							<p class="description"><?php esc_html_e( 'Score threshold from 0.0 to 1.0 (recommended 0.5) for v3 verification.', 'asrs-forms-engine' ); ?></p>
+						</td>
+					</tr>
+				</table>
+
+				<p class="submit">
+					<button type="submit" name="asrs_save_recaptcha_settings" value="1" class="button button-primary">
+						<?php esc_html_e( 'Save reCAPTCHA Settings', 'asrs-forms-engine' ); ?>
+					</button>
+				</p>
+			</form>
 		</div>
 
 		<div class="asrs-panel">

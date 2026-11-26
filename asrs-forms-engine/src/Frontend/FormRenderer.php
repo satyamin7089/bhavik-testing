@@ -12,6 +12,7 @@ namespace ASRS\FormsEngine\Frontend;
 use ASRS\FormsEngine\Core\Settings;
 use ASRS\FormsEngine\Forms\Field;
 use ASRS\FormsEngine\Forms\FormInterface;
+use ASRS\FormsEngine\Security\ReCaptchaVerifier;
 use ASRS\FormsEngine\Security\TurnstileVerifier;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,15 +23,18 @@ class FormRenderer {
 
 	private AssetsManager $assets;
 	private TurnstileVerifier $turnstile;
+	private ReCaptchaVerifier $recaptcha;
 	private Settings $settings;
 
 	public function __construct(
 		AssetsManager $assets,
 		TurnstileVerifier $turnstile,
+		ReCaptchaVerifier $recaptcha,
 		Settings $settings
 	) {
 		$this->assets    = $assets;
 		$this->turnstile = $turnstile;
+		$this->recaptcha = $recaptcha;
 		$this->settings  = $settings;
 	}
 
@@ -96,6 +100,17 @@ class FormRenderer {
 					<div class="asrs-field-group asrs-width-full asrs-turnstile-group">
 						<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( $this->turnstile->get_site_key() ); ?>"></div>
 					</div>
+				<?php endif; ?>
+
+				<?php if ( $this->recaptcha->is_enabled() ) : ?>
+					<?php if ( 'v3' === $this->recaptcha->get_version() ) : ?>
+						<input type="hidden" name="g-recaptcha-response" class="asrs-recaptcha-token" value="" />
+					<?php else : ?>
+						<div class="asrs-field-group asrs-width-full asrs-recaptcha-group" data-field-name="recaptcha">
+							<div class="asrs-g-recaptcha" data-sitekey="<?php echo esc_attr( $this->recaptcha->get_site_key() ); ?>"></div>
+							<div class="asrs-field-error" role="alert"></div>
+						</div>
+					<?php endif; ?>
 				<?php endif; ?>
 
 				<div class="asrs-form-messages" aria-live="polite"></div>

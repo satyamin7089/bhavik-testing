@@ -47,6 +47,13 @@
 		$(this).closest('table').find('tbody input[type="checkbox"]').prop('checked', checked);
 	});
 
+	// reCAPTCHA version selector: show v3 minimum score row only when v3 is selected
+	$(document).on('change', '.asrs-recaptcha-version-select', function () {
+		var isV3 = $(this).val() === 'v3';
+		var $table = $(this).closest('table');
+		$table.find('.asrs-recaptcha-v3-row').toggle(isV3);
+	});
+
 	// Zoho: Test Connection
 	$('#asrs-test-zoho-btn').on('click', function () {
 		var $btn = $(this);
