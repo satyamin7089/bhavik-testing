@@ -1,5 +1,5 @@
 /**
- * ASRS Forms Engine - Lean Frontend AJAX Submission
+ * ASRS Forms Engine - Lean Frontend AJAX Submission (with Turnstile & Google reCAPTCHA v2/v3)
  */
 (function () {
 	'use strict';
@@ -9,6 +9,119 @@
 	}
 
 	var config = window.ASRSFormsConfig;
+	var rcCfg = config.recaptcha || {};
+	var rcOn = !!(rcCfg.enabled && rcCfg.siteKey);
+
+	function whenRecaptchaReady(cb, maxTries, onTimeout) {
+		var limit = typeof maxTries === 'number' ? maxTries : 150;
+		var tries = 0;
+
+		function check() {
+			if (window.grecaptcha && typeof window.grecaptcha.ready === 'function') {
+				window.grecaptcha.ready(cb);
+				return;
+			}
+			tries += 1;
+			if (tries < limit) {
+				setTimeout(check, 200);
+			} else if (typeof onTimeout === 'function') {
+				onTimeout();
+			}
+		}
+
+		check();
+	}
+
+	function getRecaptchaWidgetId(formEl) {
+		var el = formEl.querySelector('.asrs-g-recaptcha');
+		if (!el) return null;
+		var raw = el.getAttribute('data-widget-id');
+		if (raw === null || raw === '') return null;
+		var parsed = parseInt(raw, 10);
+		return isNaN(parsed) ? null : parsed;
+	}
+
+	function renderRecaptchaV2(formEl) {
+		if (!rcOn || rcCfg.version === 'v3') return;
+		var el = formEl.querySelector('.asrs-g-recaptcha');
+		if (!el) return;
+
+		whenRecaptchaReady(function () {
+			if (typeof window.grecaptcha.render !== 'function') return;
+			if (el.getAttribute('data-widget-id') !== null) return;
+			try {
+				var id = window.grecaptcha.render(el, {
+					sitekey: el.getAttribute('data-sitekey') || rcCfg.siteKey,
+					callback: function () {
+						var group = formEl.querySelector('.asrs-field-group[data-field-name="recaptcha"]');
+						if (group) {
+							group.classList.remove('has-error');
+							var err = group.querySelector('.asrs-field-error');
+							if (err) err.textContent = '';
+						}
+					}
+				});
+				el.setAttribute('data-widget-id', String(id));
+			} catch (err) {}
+		}, 150);
+	}
+
+	function getRecaptchaToken(formEl, formData) {
+		if (!rcOn) {
+			return Promise.resolve(null);
+		}
+
+		if (rcCfg.version === 'v3') {
+			return new Promise(function (resolve) {
+				whenRecaptchaReady(
+					function () {
+						try {
+							window.grecaptcha
+								.execute(rcCfg.siteKey, { action: rcCfg.action || 'asrs_forms_submit' })
+								.then(
+									function (token) {
+										var hidden = formEl.querySelector('.asrs-recaptcha-token');
+										if (hidden) hidden.value = token || '';
+										resolve(token || '');
+									},
+									function () {
+										resolve('');
+									}
+								);
+						} catch (err) {
+							resolve('');
+						}
+					},
+					20,
+					function () {
+						resolve('');
+					}
+				);
+			});
+		}
+
+		var widgetId = getRecaptchaWidgetId(formEl);
+		var token = '';
+		if (window.grecaptcha && widgetId !== null && typeof window.grecaptcha.getResponse === 'function') {
+			try {
+				token = window.grecaptcha.getResponse(widgetId) || '';
+			} catch (err) {}
+		}
+		if (!token && formData) {
+			token = formData.get('g-recaptcha-response') || '';
+		}
+		return Promise.resolve(token);
+	}
+
+	function resetRecaptcha(formEl) {
+		if (!rcOn || rcCfg.version === 'v3' || !window.grecaptcha) return;
+		var widgetId = getRecaptchaWidgetId(formEl);
+		if (widgetId !== null && typeof window.grecaptcha.reset === 'function') {
+			try {
+				window.grecaptcha.reset(widgetId);
+			} catch (err) {}
+		}
+	}
 
 	function setNotice(container, type, text) {
 		if (!container) return;
@@ -113,6 +226,8 @@
 		var submitBtn = formEl.querySelector('.asrs-submit-btn');
 		var isSubmitting = false;
 
+		renderRecaptchaV2(formEl);
+
 		formEl.querySelectorAll('select.asrs-select').forEach(function (sel) {
 			syncSelectState(sel);
 			sel.addEventListener('change', function () {
@@ -126,6 +241,28 @@
 
 			clearFieldErrors(formEl);
 			setNotice(messagesEl, '', '');
+
+			var formData = new FormData(formEl);
+
+			if (rcOn && rcCfg.version !== 'v3') {
+				var v2WidgetId = getRecaptchaWidgetId(formEl);
+				var v2Token = '';
+				if (window.grecaptcha && v2WidgetId !== null && typeof window.grecaptcha.getResponse === 'function') {
+					try {
+						v2Token = window.grecaptcha.getResponse(v2WidgetId) || '';
+					} catch (err) {}
+				}
+				if (!v2Token) {
+					v2Token = formData.get('g-recaptcha-response') || '';
+				}
+				if (!v2Token) {
+					var missingMsg = (config.i18n && config.i18n.recaptchaMissing) || 'Please confirm that you are not a robot.';
+					showFieldErrors(formEl, { recaptcha: missingMsg });
+					setNotice(messagesEl, 'error', missingMsg);
+					return;
+				}
+			}
+
 			isSubmitting = true;
 
 			if (submitBtn) {
@@ -133,17 +270,23 @@
 				setButtonLabel(submitBtn, submitBtn.getAttribute('data-loading-label') || 'Sending...');
 			}
 
-			var formData = new FormData(formEl);
-			var payload = {
-				form_id: formId,
-				asrs_form_nonce: formData.get('asrs_form_nonce') || '',
-				asrs_rendered_at: formData.get('asrs_rendered_at') || '',
-				asrs_hp_website: formData.get('asrs_hp_website') || '',
-				'cf-turnstile-response': formData.get('cf-turnstile-response') || '',
-				fields: collectFields(formEl)
-			};
+			getRecaptchaToken(formEl, formData)
+				.then(function (recaptchaToken) {
+					var payload = {
+						form_id: formId,
+						asrs_form_nonce: formData.get('asrs_form_nonce') || '',
+						asrs_rendered_at: formData.get('asrs_rendered_at') || '',
+						asrs_hp_website: formData.get('asrs_hp_website') || '',
+						'cf-turnstile-response': formData.get('cf-turnstile-response') || '',
+						fields: collectFields(formEl)
+					};
 
-			postAjax('asrs_submit_form', payload)
+					if (recaptchaToken !== null) {
+						payload['g-recaptcha-response'] = recaptchaToken;
+					}
+
+					return postAjax('asrs_submit_form', payload);
+				})
 				.then(function (resp) {
 					if (resp && resp.success) {
 						setNotice(messagesEl, 'success', resp.data.message);
@@ -171,6 +314,7 @@
 							window.turnstile.reset();
 						} catch (err) {}
 					}
+					resetRecaptcha(formEl);
 				});
 		});
 	}

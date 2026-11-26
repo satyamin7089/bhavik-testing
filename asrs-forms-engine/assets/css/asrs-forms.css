@@ -188,8 +188,25 @@
 	cursor: pointer;
 }
 
-.asrs-form-wrapper .asrs-turnstile-group {
+.asrs-form-wrapper .asrs-turnstile-group,
+.asrs-form-wrapper .asrs-recaptcha-group {
 	margin-top: 18px;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.asrs-form-wrapper .asrs-recaptcha-group .asrs-g-recaptcha {
+	max-width: 100%;
+	min-height: 78px;
+}
+
+@media (max-width: 380px) {
+	.asrs-form-wrapper .asrs-recaptcha-group .asrs-g-recaptcha {
+		transform: scale(0.88);
+		transform-origin: 0 0;
+		min-height: 69px;
+		height: 69px;
+	}
 }
 
 /* Messages */

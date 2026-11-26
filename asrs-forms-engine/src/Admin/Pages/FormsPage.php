@@ -9,10 +9,13 @@ declare(strict_types=1);
 
 namespace ASRS\FormsEngine\Admin\Pages;
 
+use ASRS\FormsEngine\Core\Settings;
 use ASRS\FormsEngine\Forms\FormInterface;
 use ASRS\FormsEngine\Forms\FormRegistry;
 use ASRS\FormsEngine\Repositories\FormMappingRepository;
 use ASRS\FormsEngine\Repositories\SubmissionRepository;
+use ASRS\FormsEngine\Security\ReCaptchaVerifier;
+use ASRS\FormsEngine\Security\TurnstileVerifier;
 use ASRS\FormsEngine\Services\Zoho\ZohoCrmService;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,17 +28,26 @@ class FormsPage extends AbstractPage {
 	private SubmissionRepository $submissions;
 	private FormMappingRepository $mappings;
 	private ZohoCrmService $zoho_crm;
+	private ReCaptchaVerifier $recaptcha;
+	private TurnstileVerifier $turnstile;
+	private Settings $settings;
 
 	public function __construct(
 		FormRegistry $registry,
 		SubmissionRepository $submissions,
 		FormMappingRepository $mappings,
-		ZohoCrmService $zoho_crm
+		ZohoCrmService $zoho_crm,
+		ReCaptchaVerifier $recaptcha,
+		TurnstileVerifier $turnstile,
+		Settings $settings
 	) {
 		$this->registry    = $registry;
 		$this->submissions = $submissions;
 		$this->mappings    = $mappings;
 		$this->zoho_crm    = $zoho_crm;
+		$this->recaptcha   = $recaptcha;
+		$this->turnstile   = $turnstile;
+		$this->settings    = $settings;
 	}
 
 	public function render(): void {
@@ -72,13 +84,14 @@ class FormsPage extends AbstractPage {
 						<th><?php esc_html_e( 'Shortcodes', 'asrs-forms-engine' ); ?></th>
 						<th style="width:120px;"><?php esc_html_e( 'Entries', 'asrs-forms-engine' ); ?></th>
 						<th><?php esc_html_e( 'Zoho CRM Mapping', 'asrs-forms-engine' ); ?></th>
+						<th><?php esc_html_e( 'Spam Protection', 'asrs-forms-engine' ); ?></th>
 						<th style="width:180px;"><?php esc_html_e( 'Actions', 'asrs-forms-engine' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php if ( empty( $forms ) ) : ?>
 						<tr>
-							<td colspan="6"><?php esc_html_e( 'No forms found in /forms/*.php.', 'asrs-forms-engine' ); ?></td>
+							<td colspan="7"><?php esc_html_e( 'No forms found in /forms/*.php.', 'asrs-forms-engine' ); ?></td>
 						</tr>
 					<?php else : ?>
 						<?php foreach ( $forms as $form ) : ?>
@@ -123,6 +136,25 @@ class FormsPage extends AbstractPage {
 									<?php else : ?>
 										<span class="asrs-badge asrs-badge-muted"><?php esc_html_e( 'Disabled', 'asrs-forms-engine' ); ?></span>
 									<?php endif; ?>
+								</td>
+								<td>
+									<?php if ( $this->recaptcha->is_enabled() ) : ?>
+										<span class="asrs-badge asrs-badge-success">
+											<?php echo esc_html( sprintf( __( 'reCAPTCHA %s', 'asrs-forms-engine' ), strtoupper( $this->recaptcha->get_version() ) ) ); ?>
+										</span>
+									<?php elseif ( $this->turnstile->is_enabled() ) : ?>
+										<span class="asrs-badge asrs-badge-success"><?php esc_html_e( 'Turnstile', 'asrs-forms-engine' ); ?></span>
+									<?php elseif ( (bool) $this->settings->get( 'honeypot_enabled', true ) ) : ?>
+										<span class="asrs-badge asrs-badge-info"><?php esc_html_e( 'Honeypot', 'asrs-forms-engine' ); ?></span>
+									<?php else : ?>
+										<span class="asrs-badge asrs-badge-muted"><?php esc_html_e( 'None', 'asrs-forms-engine' ); ?></span>
+									<?php endif; ?>
+									<br>
+									<small>
+										<a href="<?php echo esc_url( admin_url( 'admin.php?page=asrs-forms-settings#asrs-recaptcha-settings' ) ); ?>">
+											<?php esc_html_e( 'Configure reCAPTCHA', 'asrs-forms-engine' ); ?>
+										</a>
+									</small>
 								</td>
 								<td>
 									<a href="<?php echo esc_url( admin_url( 'admin.php?page=asrs-forms-list&map_form=' . $fid ) ); ?>" class="button button-primary button-small">

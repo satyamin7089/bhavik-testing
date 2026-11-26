@@ -120,6 +120,17 @@ class AdminMenu {
 			exit;
 		}
 
+		// 4. Save Google reCAPTCHA Integration Settings (from Zoho/Integrations screen).
+		if ( isset( $_POST['asrs_save_recaptcha_settings'] ) ) {
+			check_admin_referer( 'asrs_save_recaptcha_settings_nonce' );
+			/** @var Settings $settings */
+			$settings = $this->container->get( Settings::class );
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$settings->save_recaptcha_settings( wp_unslash( $_POST ) );
+			wp_safe_redirect( add_query_arg( array( 'page' => 'asrs-forms-zoho', 'recaptcha_updated' => '1' ), admin_url( 'admin.php' ) ) );
+			exit;
+		}
+
 		// 4. Entries Bulk Actions (Retry / Delete).
 		if ( isset( $_POST['asrs_entries_bulk_submit'] ) ) {
 			check_admin_referer( 'asrs_entries_bulk_nonce' );
