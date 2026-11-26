@@ -1,0 +1,17 @@
+{
+    "name": "asrs/forms-engine",
+    "description": "Enterprise-grade, developer-first WordPress form management and Zoho CRM v7 integration platform.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ASRS\\FormsEngine\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

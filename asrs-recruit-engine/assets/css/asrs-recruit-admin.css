@@ -1,0 +1,108 @@
+.asrs-recruit-admin-wrap .asrs-admin-header {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.asrs-recruit-admin-wrap .asrs-admin-stats {
+	display: flex;
+	gap: 8px;
+}
+
+.asrs-recruit-admin-wrap .asrs-stat-pill {
+	display: inline-block;
+	padding: 5px 12px;
+	border-radius: 999px;
+	background: #f0f0f1;
+	font-weight: 600;
+	font-size: 12px;
+}
+
+.asrs-recruit-admin-wrap .asrs-pill-synced {
+	background: #d1fae5;
+	color: #065f46;
+}
+
+.asrs-recruit-admin-wrap .asrs-pill-failed {
+	background: #fee2e2;
+	color: #991b1b;
+}
+
+.asrs-recruit-admin-wrap .asrs-admin-filter-bar {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-bottom: 14px;
+}
+
+.asrs-recruit-admin-wrap .asrs-admin-card {
+	background: #ffffff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	padding: 20px 24px;
+	margin-top: 14px;
+}
+
+.asrs-recruit-admin-wrap .asrs-conn-status {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 12px 0 8px;
+}
+
+.asrs-recruit-admin-wrap .asrs-sync-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.asrs-recruit-admin-wrap .asrs-sync-synced {
+	background: #d1fae5;
+	color: #065f46;
+}
+
+.asrs-recruit-admin-wrap .asrs-sync-pending {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.asrs-recruit-admin-wrap .asrs-sync-failed {
+	background: #fee2e2;
+	color: #991b1b;
+}
+
+.asrs-recruit-admin-wrap .asrs-step-pills {
+	display: flex;
+	gap: 4px;
+	margin: 5px 0;
+}
+
+.asrs-recruit-admin-wrap .asrs-step-pills span {
+	font-size: 10px;
+	padding: 1px 6px;
+	border-radius: 3px;
+	border: 1px solid #dcdcde;
+}
+
+.asrs-recruit-admin-wrap .asrs-step-pills span.done {
+	background: #ecfdf5;
+	border-color: #6ee7b7;
+	color: #065f46;
+}
+
+.asrs-recruit-admin-wrap .asrs-step-pills span.wait {
+	background: #f6f7f7;
+	color: #646970;
+}
+
+.asrs-recruit-admin-wrap .asrs-sync-error {
+	color: #b91c1c;
+	font-size: 12px;
+	margin-top: 4px;
+}

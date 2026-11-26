@@ -1,0 +1,881 @@
+/**
+ * ASRS Recruit Engine — Careers Portal Styles
+ *
+ * Matches the Bhavik Enterprises theme design system: Reddit Sans type scale,
+ * teal / ink / orange palette, borderless surfaces with layered 3D shadows,
+ * a light glass finish (translucent white + backdrop blur), inset "pressed"
+ * form fields and the theme's orange gradient 3D button.
+ *
+ * Styling only — markup, classes and behaviour are unchanged.
+ */
+
+.asrs-recruit-wrapper,
+.asrs-apply-card {
+	--asrs-teal: #008080;
+	--asrs-teal-deep: #006b6b;
+	--asrs-ink: #142334;
+	--asrs-ink-2: #17384a;
+	--asrs-charcoal: #4d4d4e;
+	--asrs-muted: #536572;
+	--asrs-label: #344953;
+	--asrs-orange: #f58220;
+	--asrs-mint: #e4f1ef;
+	--asrs-mist: #f3f7f6;
+
+	/* Surfaces */
+	--asrs-glass: linear-gradient(150deg, rgba(255, 255, 255, .86) 0%, rgba(255, 255, 255, .7) 100%);
+	--asrs-glass-solid: linear-gradient(150deg, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .82) 100%);
+	--asrs-blur: blur(16px) saturate(150%);
+	--asrs-shadow-3d: 0 1px 1px rgba(17, 57, 70, .04),
+		0 6px 16px rgba(17, 57, 70, .06),
+		0 20px 45px rgba(17, 57, 70, .10),
+		inset 0 1px 0 rgba(255, 255, 255, .95),
+		inset 0 -1px 0 rgba(17, 57, 70, .05);
+	--asrs-shadow-3d-hover: 0 2px 3px rgba(17, 57, 70, .05),
+		0 12px 24px rgba(17, 57, 70, .09),
+		0 30px 60px rgba(17, 57, 70, .14),
+		inset 0 1px 0 rgba(255, 255, 255, 1),
+		inset 0 -1px 0 rgba(17, 57, 70, .05);
+	--asrs-shadow-soft: 0 4px 10px rgba(17, 57, 70, .05),
+		0 12px 26px rgba(17, 57, 70, .07),
+		inset 0 1px 0 rgba(255, 255, 255, .95);
+
+	/* Fields */
+	--asrs-field-bg: linear-gradient(145deg, #f5f9f8, #fbfdfc);
+	--asrs-field-shadow: inset 4px 4px 9px rgba(28, 56, 62, .075), inset -3px -3px 8px rgba(255, 255, 255, .96);
+	--asrs-focus-ring: 0 0 0 3px rgba(0, 128, 128, .13), 0 5px 14px rgba(22, 44, 62, .06);
+
+	/* Buttons */
+	--asrs-btn-bg: linear-gradient(180deg, #ff9238 0%, #f58220 54%, #e26d0c 100%);
+	--asrs-btn-bg-hover: linear-gradient(180deg, #ff9d4b 0%, #ff8826 52%, #e87312 100%);
+	--asrs-btn-shadow: 0 2px 5px rgba(180, 82, 8, .10), 0 4px 10px rgba(245, 130, 32, .12), inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 -2px 0 rgba(166, 72, 0, .16);
+	--asrs-btn-shadow-hover: 0 4px 8px rgba(180, 82, 8, .13), 0 8px 16px rgba(245, 130, 32, .16), inset 0 1px 0 rgba(255, 255, 255, .34), inset 0 -2px 0 rgba(150, 62, 0, .18);
+	--asrs-ease: cubic-bezier(.22, 1, .36, 1);
+
+	--asrs-radius: 21px;
+	--asrs-radius-sm: 14px;
+}
+
+.asrs-recruit-wrapper {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 0;
+	color: var(--asrs-charcoal);
+	font-family: inherit;
+	font-size: 17px;
+	line-height: 1.68;
+	-webkit-font-smoothing: antialiased;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) *,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) *::before,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) *::after,
+.asrs-apply-card,
+.asrs-apply-card *,
+.asrs-apply-card *::before,
+.asrs-apply-card *::after {
+	box-sizing: border-box;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) [hidden] {
+	display: none !important;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) a {
+	text-decoration: none;
+}
+
+/* Shared glass surface ------------------------------------------------------ */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card,
+.asrs-apply-card,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-job-info,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-filters,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-empty {
+	border: 0;
+	background: var(--asrs-glass);
+	-webkit-backdrop-filter: var(--asrs-blur);
+	backdrop-filter: var(--asrs-blur);
+	box-shadow: var(--asrs-shadow-3d);
+}
+
+/* Portal heading ---------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 18px 28px;
+	margin: 0 0 30px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-hero-text {
+	min-width: 0;
+	max-width: 760px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-title {
+	margin: 0 0 12px;
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: clamp(32px, 3.8vw, 52px);
+	font-weight: 700;
+	line-height: 1.12;
+	letter-spacing: -.025em;
+	text-wrap: balance;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-subtitle {
+	margin: 0;
+	color: var(--asrs-muted);
+	font-size: 17px;
+	line-height: 1.68;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-count-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 18px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--asrs-glass-solid);
+	-webkit-backdrop-filter: var(--asrs-blur);
+	backdrop-filter: var(--asrs-blur);
+	color: var(--asrs-ink-2);
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: .02em;
+	box-shadow: var(--asrs-shadow-soft);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-count-pill [data-asrs-visible-count] {
+	display: inline-grid;
+	place-items: center;
+	min-width: 30px;
+	height: 30px;
+	padding: 0 8px;
+	border-radius: 999px;
+	background: linear-gradient(180deg, #0a9393 0%, #008080 60%, #006f6f 100%);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 800;
+	box-shadow: 0 3px 8px rgba(0, 128, 128, .22), inset 0 1px 0 rgba(255, 255, 255, .25), inset 0 -2px 0 rgba(0, 70, 70, .2);
+}
+
+/* Filters ----------------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-filters {
+	display: grid;
+	grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin: 0 0 28px;
+	padding: 14px;
+	border-radius: var(--asrs-radius);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-filter-field {
+	min-width: 0;
+}
+
+/* Inputs (filters + application form) -------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-input,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) input.asrs-recruit-input,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) select.asrs-recruit-input,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) textarea.asrs-recruit-input {
+	display: block;
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	height: auto;
+	min-height: 48px;
+	margin: 0;
+	padding: 12px 13px;
+	border: 0;
+	border-radius: 10px;
+	outline: none;
+	background: var(--asrs-field-bg);
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.5;
+	box-shadow: var(--asrs-field-shadow);
+	appearance: auto;
+	transition: box-shadow .2s ease, background .2s ease;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) select.asrs-recruit-input {
+	line-height: normal;
+	cursor: pointer;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) input[type="search"].asrs-recruit-input {
+	-webkit-appearance: none;
+	appearance: none;
+	padding-left: 44px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23008080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E"), var(--asrs-field-bg);
+	background-repeat: no-repeat, no-repeat;
+	background-position: 15px center, 0 0;
+	background-size: 18px 18px, 100% 100%;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-input::placeholder {
+	color: #8b9ba1;
+	opacity: 1;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-input:focus {
+	background-color: #fff;
+	box-shadow: var(--asrs-focus-ring);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) select.asrs-recruit-input:focus,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) textarea.asrs-recruit-input:focus,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) input.asrs-recruit-input:not([type="search"]):focus {
+	background: #fff;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-input:focus-visible {
+	outline: 3px solid rgba(0, 128, 128, .28);
+	outline-offset: 3px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) textarea.asrs-recruit-textarea {
+	min-height: 100px;
+	resize: vertical;
+}
+
+/* Job cards ---------------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-jobs-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 24px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	padding: 28px;
+	overflow: hidden;
+	border-radius: var(--asrs-radius);
+	transition: transform .32s var(--asrs-ease), box-shadow .32s var(--asrs-ease);
+}
+
+
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--asrs-shadow-3d-hover);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card:hover::before {
+	opacity: 1;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-top {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 14px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 5px 12px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--asrs-mint);
+	color: var(--asrs-teal-deep);
+	font-size: 12px;
+	font-weight: 800;
+	line-height: 1.4;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 1px 2px rgba(0, 128, 128, .08);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-badge-remote {
+	background: #fdeedf;
+	color: #b4560a;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 1px 2px rgba(245, 130, 32, .1);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-title {
+	margin: 0 0 12px;
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: -.015em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-title a {
+	color: inherit;
+	transition: color .2s ease;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-title a:hover,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-title a:focus-visible {
+	color: var(--asrs-teal);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 14px;
+	color: var(--asrs-muted);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 6px 12px;
+	border-radius: 10px;
+	background: rgba(243, 247, 246, .85);
+	box-shadow: inset 2px 2px 5px rgba(28, 56, 62, .05), inset -2px -2px 5px rgba(255, 255, 255, .9);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta-item::before {
+	content: "";
+	flex: 0 0 6px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--asrs-teal);
+	opacity: .75;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta-item strong {
+	color: var(--asrs-label);
+	font-weight: 700;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-excerpt {
+	flex: 1;
+	margin: 0 0 22px;
+	color: var(--asrs-muted);
+	font-size: 16px;
+	line-height: 1.65;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-footer {
+	margin-top: auto;
+}
+
+/* Buttons (theme orange gradient 3D button) ------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 52px;
+	margin: 0;
+	padding: 13px 22px;
+	border: 0 !important;
+	border-radius: var(--asrs-radius-sm);
+	background: var(--asrs-btn-bg);
+	color: #fff !important;
+	font-family: inherit;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: none;
+	box-shadow: var(--asrs-btn-shadow);
+	cursor: pointer;
+	transition: transform .24s var(--asrs-ease), box-shadow .24s var(--asrs-ease), background .24s ease, opacity .2s ease;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn svg {
+	display: block;
+	flex: none;
+	width: 17px;
+	height: 17px;
+	transition: transform .24s var(--asrs-ease);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn:hover {
+	transform: translateY(-2px);
+	background: var(--asrs-btn-bg-hover);
+	color: #fff !important;
+	box-shadow: var(--asrs-btn-shadow-hover);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn:hover svg {
+	transform: translateX(3px);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn:active {
+	transform: translateY(0);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn:focus-visible {
+	outline: 3px solid rgba(0, 128, 128, .28);
+	outline-offset: 3px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn[disabled] {
+	opacity: .65;
+	cursor: wait;
+	transform: none;
+}
+
+/* Job detail ---------------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-back-row {
+	margin: 0 0 22px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-back-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	padding: 10px 16px;
+	border-radius: 999px;
+	background: var(--asrs-glass-solid);
+	-webkit-backdrop-filter: var(--asrs-blur);
+	backdrop-filter: var(--asrs-blur);
+	color: var(--asrs-teal);
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.3;
+	box-shadow: var(--asrs-shadow-soft);
+	transition: gap .2s ease, color .2s ease, transform .24s var(--asrs-ease);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-back-link:hover {
+	gap: 13px;
+	color: var(--asrs-ink-2);
+	transform: translateY(-1px);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-detail-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+	gap: 32px;
+	align-items: start;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-job-info {
+	min-width: 0;
+	padding: 34px;
+	border-radius: var(--asrs-radius);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-job-info .asrs-recruit-title {
+	font-size: clamp(30px, 3.2vw, 44px);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta-detail {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 18px 0 28px;
+	padding: 14px;
+	border: 0;
+	border-radius: 16px;
+	background: linear-gradient(145deg, rgba(228, 241, 239, .75), rgba(243, 247, 246, .75));
+	box-shadow: inset 3px 3px 8px rgba(28, 56, 62, .06), inset -3px -3px 8px rgba(255, 255, 255, .85);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-meta-detail .asrs-job-meta-item {
+	background: rgba(255, 255, 255, .85);
+	box-shadow: 0 2px 6px rgba(17, 57, 70, .05), inset 0 1px 0 rgba(255, 255, 255, .95);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-section {
+	margin: 0 0 26px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-section:last-child {
+	margin-bottom: 0;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-section h3 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 10px;
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -.015em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-section h3::before {
+	content: "";
+	flex: 0 0 24px;
+	width: 24px;
+	height: 2px;
+	border-radius: 4px;
+	background: var(--asrs-orange);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text {
+	color: var(--asrs-charcoal);
+	font-size: 17px;
+	line-height: 1.68;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text p {
+	margin: 0 0 1em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text p:last-child {
+	margin-bottom: 0;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text ul,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text ol {
+	margin: 0 0 1em;
+	padding-left: 1.25em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text li {
+	margin: 0 0 .35em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text li::marker {
+	color: var(--asrs-teal);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text a {
+	color: var(--asrs-teal);
+	font-weight: 700;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-apply-col {
+	position: sticky;
+	top: 110px;
+	min-width: 0;
+}
+
+/* Application form card ------------------------------------------------------ */
+.asrs-apply-card {
+	padding: 29px;
+	border: 0;
+	border-radius: var(--asrs-radius, 21px);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-apply-heading {
+	margin: 0 0 7px;
+	color: var(--asrs-ink);
+	font-family: inherit;
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.12;
+	letter-spacing: -.025em;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-apply-subheading {
+	margin: 0 0 20px;
+	color: var(--asrs-muted);
+	font-size: 17px;
+	line-height: 1.68;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-form {
+	margin: 0;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 15px;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-field-group {
+	display: grid;
+	align-content: start;
+	min-width: 0;
+	gap: 7px;
+	margin: 0;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-field-full {
+	grid-column: 1 / -1;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-label {
+	display: block;
+	margin: 0;
+	color: var(--asrs-label);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.5;
+}
+
+/* Resume picker: pressed (inset) surface, no border. */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-dropzone {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-height: 112px;
+	padding: 20px 16px 18px;
+	border: 0;
+	border-radius: 14px;
+	background: var(--asrs-field-bg);
+	text-align: center;
+	box-shadow: var(--asrs-field-shadow);
+	cursor: pointer;
+	transition: box-shadow .2s ease, background .2s ease;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-dropzone::before {
+	content: "";
+	display: block;
+	width: 42px;
+	height: 42px;
+	margin: 0 0 6px;
+	border-radius: 13px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23008080' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4M7 9l5-5 5 5'/%3E%3Cpath d='M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3'/%3E%3C/svg%3E") center / 22px 22px no-repeat, linear-gradient(180deg, #ffffff, #eef6f5);
+	box-shadow: 0 4px 10px rgba(17, 57, 70, .08), inset 0 1px 0 #fff, inset 0 -1px 0 rgba(17, 57, 70, .05);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-dropzone:hover,
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-dropzone:focus-within {
+	background: #fff;
+	box-shadow: var(--asrs-focus-ring);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-drop-title {
+	color: var(--asrs-ink);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.4;
+	word-break: break-word;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-file-drop-hint {
+	color: #718188;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-field-error {
+	margin: 0;
+	color: #a23c2e;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-field-error:empty {
+	display: none;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-hp-field {
+	position: absolute !important;
+	left: -10000px !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* Bot protection widgets (Turnstile / reCAPTCHA). */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-captcha {
+	min-width: 0;
+	overflow: hidden;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-captcha .asrs-g-recaptcha {
+	max-width: 100%;
+	min-height: 78px;
+}
+
+/* Google's v2 widget is a fixed 304px iframe; scale it on very narrow cards. */
+@media (max-width: 380px) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-captcha .asrs-g-recaptcha {
+		transform: scale(0.88);
+		transform-origin: 0 0;
+		min-height: 69px;
+		height: 69px;
+	}
+}
+
+/* Feedback ----------------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-form-feedback {
+	margin: 17px 0 0;
+	padding: 12px 14px;
+	border: 0;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.5;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-form-feedback.is-success {
+	background: linear-gradient(145deg, #e3f4ed, #f1faf6);
+	color: #247a5c;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 4px 12px rgba(36, 122, 92, .08);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-form-feedback.is-error {
+	background: linear-gradient(145deg, #fbeeeb, #fdf6f4);
+	color: #a23c2e;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 4px 12px rgba(162, 60, 46, .08);
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-form-actions {
+	margin: 17px 0 0;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-submit {
+	width: 100%;
+}
+
+/* Empty state --------------------------------------------------------------- */
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-empty {
+	margin: 0 0 24px;
+	padding: 30px 28px;
+	border-radius: var(--asrs-radius);
+	color: var(--asrs-muted);
+	text-align: center;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-empty p {
+	max-width: 640px;
+	margin: 0 auto;
+	font-size: 17px;
+	line-height: 1.68;
+}
+
+:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-jobs-grid + .asrs-recruit-empty {
+	margin-top: 24px;
+}
+
+/* No backdrop-filter support: keep the card readable. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card,
+	.asrs-apply-card,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-job-info,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-filters,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-empty {
+		background: rgba(255, 255, 255, .96);
+	}
+}
+
+/* Responsive ------------------------------------------------------------------ */
+@media (max-width: 1100px) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-filters {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-filter-search {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 980px) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-detail-layout {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 24px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-apply-col {
+		position: static;
+	}
+}
+
+@media (max-width: 767px) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) {
+		font-size: 16px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-subtitle,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-apply-subheading,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-rich-text,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-empty p {
+		font-size: 16px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-title {
+		font-size: clamp(30px, 6.5vw, 38px);
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-input,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) input.asrs-recruit-input,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) select.asrs-recruit-input,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) textarea.asrs-recruit-input {
+		font-size: 16px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-filters {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 760px) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-jobs-grid,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-jobs-grid {
+		gap: 18px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card {
+		padding: 23px 19px;
+	}
+
+	.asrs-apply-card {
+		padding: 23px 19px;
+		border-radius: 20px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-job-info {
+		padding: 24px 19px;
+		border-radius: 20px;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card-footer .asrs-recruit-btn {
+		width: 100%;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-hero {
+		align-items: flex-start;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn svg,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-back-link {
+		transition: none;
+	}
+
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-job-card:hover,
+	:is(.asrs-recruit-wrapper, .asrs-apply-card) .asrs-recruit-btn:hover {
+		transform: none;
+	}
+}

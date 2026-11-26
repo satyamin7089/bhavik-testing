@@ -1,0 +1,344 @@
+/**
+ * ASRS Forms Engine - Frontend Form Styles
+ * Pixel-matched to user brand palette & 2-column responsive layout.
+ * High-specificity selectors prevent WordPress theme CSS from overriding form controls.
+ */
+.asrs-form-wrapper,
+.asrs-form-wrapper *,
+.asrs-form-wrapper *::before,
+.asrs-form-wrapper *::after {
+	box-sizing: border-box;
+}
+
+.asrs-form-wrapper {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 0;
+	background: transparent;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	color: #142334;
+	-webkit-font-smoothing: antialiased;
+}
+
+.asrs-form-wrapper .asrs-form-title {
+	margin: 0 0 1.25rem;
+	font-size: 1.4rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: #142334;
+}
+
+.asrs-form-wrapper .asrs-hp-field {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 2-Column Responsive Grid */
+.asrs-form-wrapper .asrs-form-fields {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px 18px;
+}
+
+.asrs-form-wrapper .asrs-field-group {
+	min-width: 0;
+	margin: 0;
+}
+
+.asrs-form-wrapper .asrs-width-half {
+	grid-column: span 1;
+}
+
+.asrs-form-wrapper .asrs-width-full {
+	grid-column: 1 / -1;
+}
+
+/* Labels & Required Asterisk */
+.asrs-form-wrapper .asrs-field-label {
+	display: block;
+	margin: 0 0 7px;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.35;
+	color: #142334;
+}
+
+.asrs-form-wrapper .asrs-required {
+	color: #f68820;
+	font-weight: 700;
+	margin-left: 3px;
+}
+
+/* Inputs, Select & Textarea */
+.asrs-form-wrapper .asrs-form .asrs-input,
+.asrs-form-wrapper .asrs-form input.asrs-input,
+.asrs-form-wrapper .asrs-form select.asrs-input,
+.asrs-form-wrapper .asrs-form textarea.asrs-input {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 12px 15px;
+	font-family: inherit;
+	font-size: 14.5px;
+	font-weight: 400;
+	line-height: 1.45;
+	color: #142334;
+	background-color: #f2f7f6;
+	border: 1.5px solid #e8eded;
+	border-radius: 10px;
+	box-shadow: inset 0 1px 2px rgba(20, 35, 52, 0.03);
+	transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.asrs-form-wrapper .asrs-form .asrs-input::placeholder {
+	color: #667584;
+	opacity: 1;
+}
+
+.asrs-form-wrapper .asrs-form .asrs-input:hover:not(:focus) {
+	border-color: #d7e3e2;
+}
+
+.asrs-form-wrapper .asrs-form .asrs-input:focus {
+	outline: none;
+	background-color: #ffffff;
+	border-color: #9ec9c9;
+	box-shadow: 0 0 0 3px rgba(180, 216, 216, 0.45);
+}
+
+.asrs-form-wrapper .asrs-field-group.has-error .asrs-input {
+	background-color: #ffffff;
+	border-color: #dc2626;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+/* Select Dropdown */
+.asrs-form-wrapper .asrs-select-wrap {
+	position: relative;
+	width: 100%;
+}
+
+.asrs-form-wrapper .asrs-form select.asrs-select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	padding-right: 40px;
+	cursor: pointer;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23142334' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 14px center;
+	background-size: 14px 14px;
+}
+
+.asrs-form-wrapper .asrs-form select.asrs-select option {
+	color: #142334;
+	background: #ffffff;
+}
+
+/* Textarea */
+.asrs-form-wrapper .asrs-form textarea.asrs-textarea {
+	resize: vertical;
+	min-height: 142px;
+	line-height: 1.5;
+	font-family: inherit;
+}
+
+/* Help & Field Errors */
+.asrs-form-wrapper .asrs-field-help {
+	margin: 6px 0 0;
+	font-size: 12.5px;
+	line-height: 1.4;
+	color: #667584;
+}
+
+.asrs-form-wrapper .asrs-field-error {
+	margin-top: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.35;
+	color: #dc2626;
+}
+
+.asrs-form-wrapper .asrs-field-error:empty {
+	display: none;
+}
+
+/* Radio & Checkbox */
+.asrs-form-wrapper .asrs-radio-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.asrs-form-wrapper .asrs-radio-option,
+.asrs-form-wrapper .asrs-checkbox-option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	color: #142334;
+	cursor: pointer;
+}
+
+.asrs-form-wrapper .asrs-turnstile-group {
+	margin-top: 18px;
+}
+
+/* Messages */
+.asrs-form-wrapper .asrs-form-messages:empty {
+	display: none;
+}
+
+.asrs-form-wrapper .asrs-form-messages {
+	margin-top: 18px;
+}
+
+.asrs-form-wrapper .asrs-form-messages > div {
+	padding: 12px 15px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.45;
+}
+
+.asrs-form-wrapper .asrs-notice-success {
+	background: #ecfdf5;
+	border: 1px solid #a7f3d0;
+	color: #065f46;
+}
+
+.asrs-form-wrapper .asrs-notice-error {
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	color: #991b1b;
+}
+
+/* Submit Action Button */
+.asrs-form-wrapper .asrs-form-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-top: 22px;
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn,
+.asrs-form-wrapper .asrs-form button.asrs-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: auto;
+	padding: 13px 26px;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-radius: 10px;
+	border: none;
+	cursor: pointer;
+	background: linear-gradient(180deg, #ff9137 0%, #e46f0e 100%);
+	background-color: #f68820;
+	color: #ffffff;
+	box-shadow: 0 5px 14px -3px rgba(228, 111, 14, 0.42);
+	transition: background 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn-primary:hover:not(:disabled) {
+	background: linear-gradient(180deg, #fa8424 0%, #d46208 100%);
+	background-color: #e46f0e;
+	color: #ffffff;
+	box-shadow: 0 7px 18px -3px rgba(212, 98, 8, 0.48);
+	transform: translateY(-1px);
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn-primary:active:not(:disabled) {
+	transform: translateY(0);
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn-primary:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(246, 136, 32, 0.35), 0 5px 14px -3px rgba(228, 111, 14, 0.42);
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.asrs-form-wrapper .asrs-btn-arrow {
+	width: 17px;
+	height: 17px;
+	flex-shrink: 0;
+	display: inline-block;
+	transition: transform 0.16s ease;
+}
+
+.asrs-form-wrapper .asrs-form button.asrs-btn-primary:hover:not(:disabled) .asrs-btn-arrow {
+	transform: translateX(3px);
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 768px) {
+	.asrs-form-wrapper .asrs-form-fields {
+		gap: 16px 14px;
+	}
+
+	.asrs-form-wrapper .asrs-form .asrs-input,
+	.asrs-form-wrapper .asrs-form input.asrs-input,
+	.asrs-form-wrapper .asrs-form select.asrs-input,
+	.asrs-form-wrapper .asrs-form textarea.asrs-input {
+		padding: 11px 14px;
+	}
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 640px) {
+	.asrs-form-wrapper .asrs-form-fields {
+		grid-template-columns: 1fr;
+		gap: 15px;
+	}
+
+	.asrs-form-wrapper .asrs-width-half,
+	.asrs-form-wrapper .asrs-width-full {
+		grid-column: 1 / -1;
+	}
+
+	/* 16px font prevents iOS Safari automatic zoom on input focus */
+	.asrs-form-wrapper .asrs-form .asrs-input,
+	.asrs-form-wrapper .asrs-form input.asrs-input,
+	.asrs-form-wrapper .asrs-form select.asrs-input,
+	.asrs-form-wrapper .asrs-form textarea.asrs-input {
+		font-size: 16px;
+		padding: 12px 14px;
+	}
+
+	.asrs-form-wrapper .asrs-form select.asrs-select {
+		padding-right: 40px;
+	}
+
+	.asrs-form-wrapper .asrs-form textarea.asrs-textarea {
+		min-height: 128px;
+	}
+
+	.asrs-form-wrapper .asrs-form-actions {
+		margin-top: 18px;
+	}
+
+	.asrs-form-wrapper .asrs-form button.asrs-btn,
+	.asrs-form-wrapper .asrs-form button.asrs-btn-primary {
+		width: 100%;
+		padding: 14px 20px;
+	}
+}

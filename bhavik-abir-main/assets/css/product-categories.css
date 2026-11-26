@@ -1,0 +1,121 @@
+/* Home/About explorer; all product copy and links remain static in templates. */
+.ab-product-categories { padding: 80px 0; color: #142334; background: linear-gradient(155deg, #fff, #eff7f5); font-family: "Reddit Sans", Arial, Helvetica, sans-serif; }
+.ab-product-categories *, .ab-product-categories *::before, .ab-product-categories *::after { box-sizing: border-box; }
+.ab-product-categories [hidden] { display: none !important; }
+.ab-product-categories .ab-category-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ab-product-categories .ab-category-icon { display: block; width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ab-category-heading { display: grid; grid-template-columns: 1.65fr 1fr; align-items: end; gap: 36px; margin-bottom: 26px; }
+.ab-category-heading h2 { margin: 14px 0 0; color: #142334; font-size: clamp(30px, 3.3vw, 46px); font-weight: 700; line-height: 1.15; letter-spacing: -.03em; }
+.ab-category-heading > p { max-width: 440px; margin: 0 0 3px; padding-left: 28px; color: #536572; font-size: 17px; line-height: 1.65; }
+.ab-product-categories .ab-eyebrow { color: #008080; font-size: 17px; }
+.ab-product-categories .ab-eyebrow::before { background: #f58220; }
+.ab-category-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.ab-category-position { color: #536572; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.ab-category-controls { display: flex; gap: 8px; }
+.ab-category-controls button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; color: #007b7b; background: #e6f2f1; box-shadow: inset 0 1px 1px #fff, 0 3px 8px rgba(20,70,80,.08); cursor: pointer; touch-action: manipulation; }
+.ab-category-controls button:hover:not(:disabled) { color: #fff; background: #008080; }
+.ab-category-controls button:disabled { opacity: .35; cursor: not-allowed; }
+.ab-category-prev .ab-category-icon { transform: rotate(180deg); }
+.ab-category-polymers { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; margin: 0 0 28px; padding: 5px 4px 18px; }
+.ab-product-categories .ab-category-tab { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 176px; padding: 14px 12px 84px; border: 0; border-radius: 15px; color: #142334;     background: linear-gradient(145deg, #fff, #edf3f400);  text-decoration: none; scroll-margin-inline: 6px; transition: background .2s, color .2s, box-shadow .2s;   }
+.ab-category-tab strong { color: #008080; font-size: 26px; font-weight: 800; line-height: 1.15; letter-spacing: -.025em; }
+.ab-category-tab > span { color: black; max-width: 100%; font-size: 14px; font-weight: 400; line-height: 1.4; overflow-wrap: anywhere; }
+/* Match the Home wrapper specificity so its general height:auto image rule
+   cannot shrink these images. Transparent PNGs keep their original colours. */
+.ab-product-categories .ab-category-tab img { display: block; position: absolute; z-index: -1; bottom: 0; left: 0; width: 100%; height: 80px; max-height: none; object-fit: contain; object-position: center bottom; border-radius: 0 0 15px 15px; opacity: 1; filter: none; mask-image: none; -webkit-mask-image: none; }
+.ab-product-categories .ab-category-tab:hover { box-shadow: inset 0 1px 1.5px rgba(255,255,255,.45),
+inset 0 -2px 4px rgba(0,111,110,.04),
+0 2px 4px rgba(20,80,80,.04),
+0 6px 14px rgba(20,80,80,.085); }
+.ab-product-categories .ab-category-tab[aria-selected="true"] { color: #fff; background: linear-gradient(110deg, #e9f3f3, #dfefef);  }
+.ab-category-tab[aria-selected="true"]::after { content: ""; position: absolute; left: calc(50% - 10px); bottom: -13px; width: 20px; height: 20px; background: linear-gradient(110deg, #e9f3f3, #dfefef); transform: rotate(45deg); z-index: -2; }
+.ab-category-panel { min-width: 0; margin-bottom: 28px; border-radius: 22px; background: rgba(255,255,255,.95); box-shadow: inset 0 2px 3px #fff, inset 0 -3px 8px rgba(32,90,100,.025), 0 14px 30px rgba(32,90,100,.07); scroll-margin-top: calc(var(--ab-nav-h, 80px) + 20px); }
+.ab-category-panel:last-child { margin-bottom: 0; }
+.ab-category-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 26px; border-radius: 22px 22px 0 0; background: linear-gradient(110deg, #e9f3f3, #dfefef); }
+.ab-category-material-name { display: flex; align-items: center; gap: 22px; min-width: 0; }
+.ab-category-material-name h3 { flex: none; margin: 0; font-size: 38px; font-weight: 800; line-height: 1.1; letter-spacing: -.025em; }
+.ab-category-material-name > p { margin: 0; padding-left: 22px; color: #354f5e; font-size: 17px; line-height: 1.5; }
+.ab-category-panel-actions { flex: none; }
+.ab-product-categories .ab-category-details { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; border-radius: 10px; color: #006e6d; background: rgba(255,255,255,.65); box-shadow: inset 0 2px 2px rgba(255,255,255,.95), inset 0 -3px 6px rgba(0,100,100,.06), 0 4px 12px rgba(0,80,85,.08); font-size: 15px; font-weight: 600; line-height: 1.4; text-decoration: none; }
+.ab-product-categories .ab-category-details:hover { color: #fff; background: #007b77; }
+.ab-product-categories .ab-category-details .ab-category-icon { width: 18px; height: 18px; }
+.ab-category-panel-body { padding: 24px; }
+.ab-product-categories .ab-category-supply-title { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; color: #008080; font-size: 22px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; }
+.ab-category-supply-title::before { content: ""; width: 34px; height: 3px; flex: none; border-radius: 4px; background:#f58220; }
+.ab-category-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.ab-product-categories .ab-category-card { position: relative; isolation: isolate; min-width: 0; overflow: hidden; border: 0; border-radius: 15px; background: #f0f6f6; box-shadow: inset 0 2px 3px rgba(255,255,255,.98), 0 3px 6px rgba(26,75,87,.06), 0 10px 24px rgba(26,75,87,.13); }
+/* Paint soft bevels above the artwork, so the images cannot hide the
+   highlights. These decorative layers never intercept links or tab clicks. */
+.ab-product-categories .ab-category-tab::before,
+.ab-product-categories .ab-category-card::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; box-shadow: inset 0 2px 5px rgba(255,255,255,.85), inset 0 -4px 10px rgba(26,75,87,.1); pointer-events: none; }
+.ab-product-categories .ab-category-tab[aria-selected="true"]::before { box-shadow: inset 0 2px 5px rgba(255,255,255,.3), inset 0 -4px 10px rgba(0,49,47,.2); }
+/* Full-height image, including on Home where .ab-bhavik-page img sets
+   height:auto. Cover the entire diagonal window, not just the image's ratio. */
+.ab-product-categories .ab-category-card-art { display: block; position: absolute; z-index: -2; top: 0; right: 0; bottom: 0; width: 36%; height: 100%; min-height: 100%; max-height: none; object-fit: cover; object-position: center; opacity: 1; }
+.ab-category-card-copy { display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 330px; padding: 22px 18px; }
+.ab-category-card-copy::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(110deg, #fff, #f7fafa); clip-path: polygon(0 0, 94% 0, 78% 100%, 0 100%); }
+.ab-product-categories .ab-category-card-copy > .ab-category-icon { width: 34px; height: 34px; margin-bottom: 14px; color: #008080; }
+.ab-product-categories .ab-category-card h5 { min-height: 2.5em; min-width: 0; white-space: normal; overflow-wrap: anywhere; width: 100%; margin: 0 0 12px; color: #142334; font-size: 22px; font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
+.ab-product-categories .ab-category-card p { width: 78%; margin: 0 0 20px; color: #536572; font-size: 17px; line-height: 1.5; }
+.ab-product-categories .ab-category-card a { display: inline-flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 100%; min-height: 48px; margin-top: auto; padding: 10px 12px; border: 0; border-radius: 9px;     color: #fff; background: #007b77ed; box-shadow: inset 0 2px 2px #fff, inset 0 -3px 6px rgba(0,100,100,.05), 0 4px 10px rgba(0,80,85,.08); font-size: 17px; font-weight: 700; line-height: 1.4; text-decoration: none; }
+.ab-product-categories .ab-category-card a:hover { color: #fff; background: #007b77; }
+.ab-product-categories .ab-category-card a .ab-category-icon { width: 18px; height: 18px; }
+.ab-product-categories .ab-category-benefits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 28px 0 0; padding: 20px 12px; list-style: none; border-radius: 16px; background: #eaf4f3; }
+.ab-category-benefits li { display: flex; align-items: center; justify-content: center; gap: 12px; min-width: 0; margin: 0; padding: 4px 16px; color: #17384a; font-size: 15px; font-weight: 600; line-height: 1.4; }
+
+.ab-product-categories .ab-category-benefits .ab-category-icon { width: 32px; height: 32px; color: #008080; }
+.ab-product-categories a:focus-visible, .ab-product-categories button:focus-visible, .ab-category-panel:focus-visible { outline: 3px solid #008080; outline-offset: 4px; }
+/* Desktop-only adjustment: leave the existing tablet/phone cards alone.
+   The image backs the right half; the diagonal reveals 30% at the top and
+   50% at the bottom, averaging roughly 40% of each desktop card. */
+@media (min-width: 1200px) {
+    .ab-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-product-categories .ab-category-card-art { width: 50%; }
+    .ab-category-card-copy::before { clip-path: polygon(0 0, 70% 0, 50% 100%, 0 100%); }
+    .ab-product-categories .ab-category-card h5 { width: 64%; }
+    .ab-product-categories .ab-category-card p { width: 50%; }
+    .ab-product-categories .ab-category-card a { max-width: 64%; }
+}
+@media (max-width: 1199px) {
+    .ab-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-category-card-copy { min-height: 260px; padding: 24px; }
+    .ab-product-categories .ab-category-card-art { width: 40%; }
+    .ab-category-card-copy::before { clip-path: polygon(0 0, 86% 0, 68% 100%, 0 100%); }
+    .ab-product-categories .ab-category-card h5 { width: 85%; }
+    .ab-product-categories .ab-category-card p { width: 68%; }
+}
+@media (max-width: 1100px) {
+    .ab-category-polymers { display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #99c6c2 #e7f1f0; -webkit-overflow-scrolling: touch; }
+    .ab-product-categories .ab-category-tab { flex: 0 0 160px; scroll-snap-align: center; }
+    .ab-category-material-name { gap: 16px; }
+    .ab-category-material-name > p { padding-left: 16px; }
+    .ab-category-benefits li { padding: 4px 10px; font-size: 14px; }
+}
+@media (max-width: 700px) {
+    .ab-product-categories { padding: 56px 0; }
+    .ab-category-heading { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .ab-category-heading > p { padding-left: 0; box-shadow: none; }
+    .ab-category-panel-head { flex-direction: column; align-items: stretch; padding: 22px 20px; gap: 18px; }
+    .ab-category-material-name h3 { font-size: 32px; }
+    .ab-category-material-name > p { font-size: 15px; }
+    .ab-product-categories .ab-category-details { font-size: 14px; }
+    .ab-category-panel-body { padding: 22px 16px; }
+    .ab-product-categories .ab-category-supply-title { align-items: flex-start; font-size: 20px; gap: 10px; }
+    .ab-category-supply-title::before { width: 20px; margin-top: 10px; }
+    .ab-category-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .ab-category-card-copy { min-height: 224px; }
+    .ab-product-categories .ab-category-card h5 { min-height: 0; }
+    .ab-product-categories .ab-category-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; padding: 20px 8px; }
+    .ab-category-benefits li { justify-content: flex-start; font-size: 13px; gap: 8px; }
+    .ab-category-benefits li:nth-child(3) { box-shadow: none; }
+    .ab-product-categories .ab-category-benefits .ab-category-icon { width: 26px; height: 26px; }
+}
+@media (max-width: 420px) {
+    .ab-category-card-copy { padding: 20px 16px; }
+    .ab-product-categories .ab-category-card-art { width: 32%; }
+    .ab-category-card-copy::before { clip-path: polygon(0 0, 96% 0, 78% 100%, 0 100%); }
+    .ab-product-categories .ab-category-card h5 { width: 100%; }
+    .ab-product-categories .ab-category-card p { width: 78%; }
+    .ab-product-categories .ab-category-card a { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) { .ab-product-categories *, .ab-product-categories *::before { scroll-behavior: auto !important; transition: none !important; } }
