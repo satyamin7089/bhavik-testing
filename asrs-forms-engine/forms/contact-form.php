@@ -138,17 +138,6 @@ return array(
 				'location_group' => 'primary',
 			),
 		),
-		'city_search'    => array(
-			'label'       => 'Quick city search',
-			'type'        => 'location_cascade',
-			'width'       => 'full',
-			'required'    => false,
-			'placeholder' => 'Or type a city (e.g. Kanpur)',
-			'attributes'  => array(
-				'location_level' => 'search',
-				'location_group' => 'primary',
-			),
-		),
 		'message'        => array(
 			'label'       => 'How Can We Help',
 			'type'        => 'textarea',
