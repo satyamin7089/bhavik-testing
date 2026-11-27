@@ -153,8 +153,17 @@ class FormRenderer {
 			return;
 		}
 		?>
+		<?php
+		$lc_attrs = '';
+		if ( 'location_cascade' === $type ) {
+			$lc_level = isset( $attrs['location_level'] ) ? $attrs['location_level'] : 'country';
+			$lc_group = isset( $attrs['location_group'] ) ? $attrs['location_group'] : 'default';
+			$lc_attrs = ' data-location-level="' . esc_attr( $lc_level ) . '" data-location-group="' . esc_attr( $lc_group ) . '"';
+		}
+		?>
+
 		<div class="asrs-field-group asrs-width-<?php echo esc_attr( $width ); ?> asrs-field-type-<?php echo esc_attr( $type ); ?> <?php echo esc_attr( $field->get_css_class() ); ?>"
-			data-field-name="<?php echo esc_attr( $name ); ?>">
+			data-field-name="<?php echo esc_attr( $name ); ?>"<?php echo $lc_attrs; ?>>
 			<?php if ( 'checkbox' !== $type ) : ?>
 				<label class="asrs-field-label" for="<?php echo esc_attr( $field_id ); ?>">
 					<?php echo esc_html( $field->get_label() ); ?>
@@ -236,6 +245,32 @@ class FormRenderer {
 					break;
 
 				default:
+					if ( 'location_cascade' === $type ) {
+						$lc_level = isset( $attrs['location_level'] ) ? $attrs['location_level'] : 'country';
+						$lc_ph    = $field->get_placeholder() ?: __( 'Select…', 'asrs-forms-engine' );
+						if ( 'search' === $lc_level ) {
+							?>
+							<input type="text"
+								id="<?php echo esc_attr( $field_id ); ?>"
+								name="fields[<?php echo esc_attr( $name ); ?>]"
+								class="asrs-input asrs-location-search"
+								placeholder="<?php echo esc_attr( $lc_ph ); ?>" />
+							<?php
+						} else {
+							?>
+							<div class="asrs-select-wrap">
+								<select
+									id="<?php echo esc_attr( $field_id ); ?>"
+									name="fields[<?php echo esc_attr( $name ); ?>]"
+									class="asrs-input asrs-select"
+									data-placeholder="<?php echo esc_attr( $lc_ph ); ?>">
+									<option value=""><?php echo esc_html( $lc_ph ); ?></option>
+								</select>
+							</div>
+							<?php
+						}
+						break;
+					}
 					$html_type = in_array( $type, array( 'text', 'email', 'url', 'tel', 'number' ), true ) ? $type : 'text';
 					?>
 					<input type="<?php echo esc_attr( $html_type ); ?>"

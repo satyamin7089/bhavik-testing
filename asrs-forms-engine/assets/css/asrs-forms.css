@@ -359,3 +359,7 @@
 		padding: 14px 20px;
 	}
 }
+
+/* Location cascade (Country -> State -> City) */
+.asrs-field-type-location_cascade .asrs-location-search { margin-top: 4px; }
+.asrs-field-type-location_cascade[data-location-level="search"] .asrs-field-label { font-weight: 600; }
