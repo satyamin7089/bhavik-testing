@@ -5,7 +5,7 @@
  * shape: { "Country": { "State": ["City", ...], ... }, ... }
  *
  * Fields are declared in a form definition with type "location_cascade" and an
- * attribute pair: location_level (country|state|city|search) and location_group
+ * attribute pair: location_level (country|state|city) and location_group
  * (to link several fields that belong to the same location picker).
  */
 (function () {
@@ -73,23 +73,6 @@
         );
     }
 
-    function setSelectValue(formEl, group, level, value) {
-        var sels = groupSelects(formEl, group, level);
-        for (var i = 0; i < sels.length; i++) {
-            sels[i].value = value;
-            if (sels[i].dispatchEvent) {
-                sels[i].dispatchEvent(new Event('change'));
-            }
-        }
-    }
-
-    function searchInputs(formEl, group) {
-        return formEl.querySelectorAll(
-            '.asrs-field-type-location_cascade[data-location-group="' + group +
-            '"][data-location-level="search"] input'
-        );
-    }
-
     function initForm(formEl) {
         if (!formEl || formEl.getAttribute('data-asrs-location-init') === '1') {
             return;
@@ -153,38 +136,6 @@
                                 cities,
                                 citySels[ci].getAttribute('data-placeholder') || 'Select City'
                             );
-                        }
-                    });
-                }
-
-                // Reverse: type a city -> auto-select State + Country.
-                var searches = searchInputs(formEl, group);
-                for (var q = 0; q < searches.length; q++) {
-                    searches[q].addEventListener('input', function () {
-                        var term = this.value.trim().toLowerCase();
-                        if (!term) {
-                            return;
-                        }
-                        for (var country in data) {
-                            if (!data.hasOwnProperty(country)) { continue; }
-                            for (var state in data[country]) {
-                                if (!data[country].hasOwnProperty(state)) { continue; }
-                                var cities = data[country][state] || [];
-                                var found = null;
-                                for (var k = 0; k < cities.length; k++) {
-                                    if (cities[k].toLowerCase().indexOf(term) !== -1) {
-                                        found = cities[k];
-                                        break;
-                                    }
-                                }
-                                if (found) {
-                                    setSelectValue(formEl, group, 'country', country);
-                                    setSelectValue(formEl, group, 'state', state);
-                                    setSelectValue(formEl, group, 'city', found);
-                                    this.value = found;
-                                    return;
-                                }
-                            }
                         }
                     });
                 }

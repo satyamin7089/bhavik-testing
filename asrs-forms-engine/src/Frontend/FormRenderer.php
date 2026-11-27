@@ -246,29 +246,18 @@ class FormRenderer {
 
 				default:
 					if ( 'location_cascade' === $type ) {
-						$lc_level = isset( $attrs['location_level'] ) ? $attrs['location_level'] : 'country';
-						$lc_ph    = $field->get_placeholder() ?: __( 'Select…', 'asrs-forms-engine' );
-						if ( 'search' === $lc_level ) {
-							?>
-							<input type="text"
+						$lc_ph = $field->get_placeholder() ?: __( 'Select…', 'asrs-forms-engine' );
+						?>
+						<div class="asrs-select-wrap">
+							<select
 								id="<?php echo esc_attr( $field_id ); ?>"
 								name="fields[<?php echo esc_attr( $name ); ?>]"
-								class="asrs-input asrs-location-search"
-								placeholder="<?php echo esc_attr( $lc_ph ); ?>" />
-							<?php
-						} else {
-							?>
-							<div class="asrs-select-wrap">
-								<select
-									id="<?php echo esc_attr( $field_id ); ?>"
-									name="fields[<?php echo esc_attr( $name ); ?>]"
-									class="asrs-input asrs-select"
-									data-placeholder="<?php echo esc_attr( $lc_ph ); ?>">
-									<option value=""><?php echo esc_html( $lc_ph ); ?></option>
-								</select>
-							</div>
-							<?php
-						}
+								class="asrs-input asrs-select"
+								data-placeholder="<?php echo esc_attr( $lc_ph ); ?>">
+								<option value=""><?php echo esc_html( $lc_ph ); ?></option>
+							</select>
+						</div>
+						<?php
 						break;
 					}
 					$html_type = in_array( $type, array( 'text', 'email', 'url', 'tel', 'number' ), true ) ? $type : 'text';
