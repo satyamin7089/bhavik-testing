@@ -1,0 +1,29 @@
+{
+  "India": {
+    "Uttar Pradesh": ["Kanpur", "Lucknow", "Varanasi", "Agra", "Prayagraj", "Ghaziabad", "Noida", "Meerut"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Thane", "Navi Mumbai"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubballi", "Belagavi"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar"],
+    "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"],
+    "Delhi": ["New Delhi", "Dwarka", "Rohini", "Saket"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad"],
+    "Bihar": ["Patna", "Gaya", "Muzaffarpur"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior"],
+    "Punjab": ["Ludhiana", "Amritsar", "Chandigarh", "Jalandhar"]
+  },
+  "United States": {
+    "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose", "Oakland"],
+    "Texas": ["Houston", "Austin", "Dallas", "San Antonio", "El Paso"],
+    "New York": ["New York City", "Buffalo", "Rochester", "Albany"],
+    "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
+    "Illinois": ["Chicago", "Springfield", "Naperville"]
+  },
+  "United Kingdom": {
+    "England": ["London", "Manchester", "Bristol", "Leeds", "Birmingham"],
+    "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
+    "Wales": ["Cardiff", "Swansea"]
+  }
+}
