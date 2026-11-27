@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Location Cascade Widget</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 12px; }
+    label { display:block; font-size:12px; font-weight:600; margin:10px 0 4px; color:#333; }
+    select, input {
+      width:100%; padding:8px; border:1px solid #c9c9c9; border-radius:6px;
+      font-size:14px; box-sizing:border-box;
+    }
+    select:disabled { background:#f2f2f2; color:#999; }
+    .hint { font-size:11px; color:#888; margin-top:6px; }
+  </style>
+</head>
+<body>
+  <label for="country">Country</label>
+  <select id="country"><option value="">Select Country</option></select>
+
+  <label for="state">State / Province</label>
+  <select id="state" disabled><option value="">Select State</option></select>
+
+  <label for="city">City</label>
+  <select id="city" disabled><option value="">Select City</option></select>
+
+  <label for="citySearch">Or just type a city (e.g. Kanpur)</label>
+  <input id="citySearch" type="text" placeholder="Type a city name…" />
+
+  <div class="hint">Type a city → country &amp; state auto-select.</div>
+
+  <script>
+    // ---- Load the location hierarchy from the JSON file ----
+    let LOCATION = {};
+
+    function init(data) {
+      LOCATION = data;
+      const countryEl = document.getElementById('country');
+      Object.keys(LOCATION).forEach(c => countryEl.add(new Option(c, c)));
+
+      countryEl.addEventListener('change', onCountry);
+      document.getElementById('state').addEventListener('change', onState);
+      document.getElementById('city').addEventListener('change', pushToForm);
+      document.getElementById('citySearch').addEventListener('input', onCityType);
+    }
+
+    // ---- Forward cascade: Country -> State -> City ----
+    function onCountry() {
+      const stateEl = document.getElementById('state');
+      const cityEl  = document.getElementById('city');
+      stateEl.innerHTML = '<option value="">Select State</option>';
+      cityEl.innerHTML  = '<option value="">Select City</option>';
+      cityEl.disabled = true;
+
+      const states = LOCATION[this.value] || {};
+      Object.keys(states).forEach(s => stateEl.add(new Option(s, s)));
+      stateEl.disabled = false;
+      pushToForm();
+    }
+
+    function onState() {
+      const cityEl = document.getElementById('city');
+      cityEl.innerHTML = '<option value="">Select City</option>';
+      const cities = (LOCATION[document.getElementById('country').value] || {})[this.value] || [];
+      cities.forEach(c => cityEl.add(new Option(c, c)));
+      cityEl.disabled = false;
+      pushToForm();
+    }
+
+    // ---- Reverse: type a city -> auto-select State + Country ----
+    function onCityType() {
+      const q = this.value.trim().toLowerCase();
+      if (!q) return;
+      for (const country in LOCATION) {
+        for (const state in LOCATION[country]) {
+          const hit = LOCATION[country][state].find(c => c.toLowerCase().includes(q));
+          if (hit) {
+            const countryEl = document.getElementById('country');
+            const stateEl   = document.getElementById('state');
+            countryEl.value = country;
+            countryEl.dispatchEvent(new Event('change')); // populates states
+            stateEl.value = state;
+            stateEl.dispatchEvent(new Event('change'));   // populates cities
+            document.getElementById('city').value = hit;
+            pushToForm();
+            return;
+          }
+        }
+      }
+    }
+
+    // ---- Write selections back into the parent Zoho form fields ----
+    function pushToForm() {
+      const values = {
+        Country: document.getElementById('country').value,
+        State:   document.getElementById('state').value,
+        City:    document.getElementById('city').value
+      };
+      Object.entries(values).forEach(([name, val]) => setFormField(name, val));
+    }
+
+    function setFormField(name, value) {
+      try {
+        // Zoho Forms widget SDK
+        if (window.ZFAPPS && typeof ZFAPPS.setFieldValue === 'function') {
+          ZFAPPS.setFieldValue({ field_name: name, value: value });
+        }
+        // Zoho Creator widget SDK
+        else if (window.ZOHO && ZOHO.CREATOR && ZOHO.CREATOR.FORM) {
+          ZOHO.CREATOR.FORM.setFieldValue({ field_name: name, value: value });
+        }
+      } catch (e) {
+        console.log('setFormField failed for', name, e);
+      }
+    }
+
+    // ---- Fetch the JSON (works when widget is uploaded as a folder) ----
+    fetch('./data.json')
+      .then(r => r.json())
+      .then(init)
+      .catch(err => {
+        console.error('Could not load data.json:', err);
+        document.body.insertAdjacentHTML('beforeend',
+          '<div class="hint">Failed to load data.json. Embed the JSON inline if hosting blocks fetch.</div>');
+      });
+  </script>
+</body>
+</html>
