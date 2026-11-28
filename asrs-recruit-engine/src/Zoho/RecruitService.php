@@ -128,6 +128,49 @@ class RecruitService {
 					continue;
 				}
 
+				// The list endpoint can flatten rich text. Fetch each included job by ID
+				// to retain the original headings, paragraphs and lists.
+				$detail = $this->client->request( 'GET', '/Job_Openings/' . rawurlencode( (string) $job['id'] ) );
+				if ( is_wp_error( $detail ) ) {
+					return new WP_Error(
+						'asrs_recruit_job_detail_error',
+						sprintf(
+							/* translators: 1: Zoho job ID, 2: API error message. */
+							__( 'Could not fetch formatted details for job %1$s: %2$s. The previous job cache was kept.', 'asrs-recruit-engine' ),
+							(string) $job['id'],
+							$detail->get_error_message()
+						)
+					);
+				}
+
+				$full_job = $detail['body']['data'][0] ?? null;
+				if ( ! is_array( $full_job ) || (string) ( $full_job['id'] ?? '' ) !== (string) $job['id'] ) {
+					return new WP_Error(
+						'asrs_recruit_invalid_job_detail',
+						sprintf(
+							/* translators: %s: Zoho job ID. */
+							__( 'Zoho returned invalid details for job %s. The previous job cache was kept.', 'asrs-recruit-engine' ),
+							(string) $job['id']
+						)
+					);
+				}
+
+				foreach ( array( 'Job_Description', 'Requirements', 'Benefits' ) as $field ) {
+					if ( array_key_exists( $field, $full_job ) ) {
+						$job[ $field ] = $full_job[ $field ];
+					} elseif ( ! empty( $job[ $field ] ) ) {
+						return new WP_Error(
+							'asrs_recruit_missing_job_detail_field',
+							sprintf(
+								/* translators: 1: Zoho job ID, 2: field API name. */
+								__( 'Zoho omitted %2$s from job %1$s details. The previous job cache was kept.', 'asrs-recruit-engine' ),
+								(string) $job['id'],
+								$field
+							)
+						);
+					}
+				}
+
 				$dept = '';
 				if ( isset( $job['Department_Name'] ) && is_array( $job['Department_Name'] ) ) {
 					$dept = (string) ( $job['Department_Name']['name'] ?? '' );
