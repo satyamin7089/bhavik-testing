@@ -405,6 +405,21 @@ class ZohoCrmService {
 			}
 		}
 
+		// 4. Ensure Product_Enquiries Visitor Name (API: Name) fallback — mandatory in Zoho.
+		if ( 'Product_Enquiries' === $module ) {
+			if ( empty( $record['Name'] ) ) {
+				$fn   = trim( (string) ( $data['first_name'] ?? '' ) );
+				$ln   = trim( (string) ( $data['last_name'] ?? '' ) );
+				$full = trim( $fn . ' ' . $ln );
+				if ( '' === $full && ! empty( $data['full_name'] ) ) {
+					$full = (string) $data['full_name'];
+				}
+				if ( '' !== $full ) {
+					$record['Name'] = $full;
+				}
+			}
+		}
+
 		return apply_filters( 'asrs_forms_zoho_payload', $record, $form, $data, $mapping, $submission_id );
 	}
 

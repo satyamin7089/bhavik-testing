@@ -52,6 +52,14 @@ class AssetsManager {
 			true
 		);
 
+		wp_register_script(
+			'asrs-location-cascade',
+			ASRS_FORMS_URL . 'assets/js/asrs-location-cascade.js',
+			array( 'asrs-forms-frontend' ),
+			$js_ver,
+			true
+		);
+
 		if ( $this->turnstile->is_enabled() ) {
 			wp_register_script(
 				'cloudflare-turnstile',
@@ -81,6 +89,7 @@ class AssetsManager {
 
 		wp_enqueue_style( 'asrs-forms-frontend' );
 		wp_enqueue_script( 'asrs-forms-frontend' );
+		wp_enqueue_script( 'asrs-location-cascade' );
 
 		if ( $this->turnstile->is_enabled() ) {
 			wp_enqueue_script( 'cloudflare-turnstile' );
@@ -104,8 +113,9 @@ class AssetsManager {
 			'asrs-forms-frontend',
 			'ASRSFormsConfig',
 			array(
-				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-				'nonce'     => wp_create_nonce( 'asrs_forms_frontend_nonce' ),
+			'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+			'nonce'           => wp_create_nonce( 'asrs_forms_frontend_nonce' ),
+			'locationDataUrl' => ASRS_FORMS_URL . 'assets/data/locations.json',
 				'recaptcha' => $this->recaptcha_config(),
 				'i18n'      => array(
 					'genericError'     => __( 'An unexpected error occurred. Please try again.', 'asrs-forms-engine' ),

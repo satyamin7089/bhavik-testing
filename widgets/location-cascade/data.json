@@ -1,0 +1,17 @@
+{
+  "India": {
+    "Uttar Pradesh": ["Kanpur", "Lucknow", "Varanasi", "Agra", "Prayagraj", "Ghaziabad"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubballi"],
+    "Delhi": ["New Delhi", "Dwarka", "Rohini"]
+  },
+  "United States": {
+    "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento"],
+    "Texas": ["Houston", "Austin", "Dallas", "San Antonio"],
+    "New York": ["New York City", "Buffalo", "Rochester"]
+  },
+  "United Kingdom": {
+    "England": ["London", "Manchester", "Bristol", "Leeds"],
+    "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"]
+  }
+}

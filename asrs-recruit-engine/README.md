@@ -19,3 +19,10 @@ White-label WordPress Careers Portal & Zoho Recruit API v2 integration plugin.
 4. Go to **ASRS Careers -> Zoho Recruit & Settings**, save **Client ID** + **Client Secret**, paste the Grant Token, and click **Exchange & Connect**.
 5. Go to **ASRS Careers -> Job Openings** and click **Sync Jobs Now**.
 6. Create a WordPress page `/careers/` and add `[asrs_careers]`.
+
+## Job description formatting
+Zoho's job-list response may flatten rich text. Job sync also requests each included opening by ID and caches its original description, requirements and benefits. The frontend sanitizes this HTML with WordPress `wp_kses_post` while retaining supported headings, lists and paragraphs; plain text remains supported. After updating the plugin, click **Sync Jobs Now** to refresh jobs that were cached before this change. If Zoho does not return formatted content for a particular job, its original structure cannot be reconstructed from flattened text.
+
+Each sync makes one additional API request per included job, so allow for Zoho API limits and longer sync times. If a detail request fails or omits an expected nonempty rich-text field, the sync reports an error and keeps the previous cache rather than replacing it with flattened content. Retry the sync after resolving the API error.
+
+Run the standalone sync regression tests with `php asrs-recruit-engine/tests/job-sync-test.php`.

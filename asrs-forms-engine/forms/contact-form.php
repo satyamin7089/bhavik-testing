@@ -33,8 +33,9 @@ return array(
 			'company_name'   => 'Company',
 			'job_title'      => 'Designation',
 			'website'        => 'Website',
-			'city'           => 'City',
-			'country'        => 'Country',
+				'city'           => 'City',
+				'state'          => 'State',
+				'country'        => 'Country',
 			'message'        => 'Description',
 		),
 		'static_values'    => array(
@@ -104,24 +105,37 @@ return array(
 				'max_length' => 200,
 			),
 		),
-		'city'           => array(
-			'label'       => 'City',
-			'type'        => 'text',
-			'width'       => 'half',
-			'required'    => false,
-			'placeholder' => 'City',
-			'rules'       => array(
-				'max_length' => 100,
-			),
-		),
 		'country'        => array(
 			'label'       => 'Country',
-			'type'        => 'text',
+			'type'        => 'location_cascade',
 			'width'       => 'half',
 			'required'    => false,
-			'placeholder' => 'Country',
-			'rules'       => array(
-				'max_length' => 100,
+			'placeholder' => 'Select Country',
+			'attributes'  => array(
+				'location_level' => 'country',
+				'location_group' => 'primary',
+			),
+		),
+		'state'          => array(
+			'label'       => 'State / Province',
+			'type'        => 'location_cascade',
+			'width'       => 'half',
+			'required'    => false,
+			'placeholder' => 'Select State',
+			'attributes'  => array(
+				'location_level' => 'state',
+				'location_group' => 'primary',
+			),
+		),
+		'city'           => array(
+			'label'       => 'City',
+			'type'        => 'location_cascade',
+			'width'       => 'half',
+			'required'    => false,
+			'placeholder' => 'Select City',
+			'attributes'  => array(
+				'location_level' => 'city',
+				'location_group' => 'primary',
 			),
 		),
 		'message'        => array(
